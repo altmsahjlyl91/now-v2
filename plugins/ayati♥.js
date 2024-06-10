@@ -1,4 +1,4 @@
-import fetch from  node-fetch ;
+import fetch from 'node-fetch';
 
 const fetchQuranData = async (surahNumber) => {
   try {
@@ -14,7 +14,7 @@ const fetchQuranData = async (surahNumber) => {
 const handler = async (m, { conn }) => {
 conn.qurannData = conn.qurannData ? conn.qurannData : {};
 
-  const surahNumber = parseInt(m.text.split(   )[1]);
+  const surahNumber = parseInt(m.text.split(' ')[1]);
   if (isNaN(surahNumber) || surahNumber < 1 || surahNumber > 114) {
     m.reply("❌ رقم السورة غير صحيح. يرجى تقديم رقم سورة صالح بين 1 و 114.\n مثال : \n .سوره 114");
     return;
@@ -28,7 +28,7 @@ conn.qurannData = conn.qurannData ? conn.qurannData : {};
 
   const formattedList = Object.values(ayahs).map(v => (
     `*${v.number.inSurah}.* ${v.text.arab}`
-  )).join( \n );
+  )).join('\n');
 
   const instructions = "قم بالرد على هذه الرسالة برقم الآية المطلوب لاستقبال الصوت. \n يمكنك زيارة أنستغرام صاحب البوت لمعرفة المزيد عن هذه الميزة \n instagram.com/gl_al.12";
 
