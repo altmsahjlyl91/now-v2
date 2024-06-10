@@ -37,5 +37,5 @@ let res = await gpt.json()
 await m.reply(res.gpt)
 } catch {
 }}}};
-handler.command = /^(openai|chatgpt|ia|openai2|chatgpt2|ia2|Gata)$/i;
+handler.command = /^(openai|chatgpt|مساعد|openai2|chatgpt2|ia2|Gata)$/i;
 export default handler;
