@@ -96,7 +96,7 @@ handler.before = async (m) => {
         } catch {
         parsedData5 = akuariapijson2.respon;    
         }            
-        const akuariapiresult2 = await translate(`${parsedData5}`, {to: 'ar', autoCorrect: true});
+        const akuariapiresult2 = await translate(`${parsedData5}`, {to: 'es', autoCorrect: true});
         m.reply(`${akuariapiresult2.text}`.trim());  
         return;    
         }     
