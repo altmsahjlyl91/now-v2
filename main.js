@@ -246,6 +246,32 @@ function clearTmp() {
   });
 }
 
+// Función para eliminar archivos core.<numero>
+const dirToWatchccc = path.join(__dirname, './');
+function deleteCoreFiles(filePath) {
+  const coreFilePattern = /^core\.\d+$/i;
+  const filename = path.basename(filePath);
+  if (coreFilePattern.test(filename)) {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(`Error eliminando el archivo ${filePath}:`, err);
+      } else {
+        console.log(`Archivo eliminado: ${filePath}`);
+      }
+    });
+  }
+}
+fs.watch(dirToWatchccc, (eventType, filename) => {
+  if (eventType === 'rename') {
+    const filePath = path.join(dirToWatchccc, filename);
+    fs.stat(filePath, (err, stats) => {
+      if (!err && stats.isFile()) {
+        deleteCoreFiles(filePath);
+      }
+    });
+  }
+});
+
 function purgeSession() {
 let prekey = []
 let directorio = readdirSync("./MysticSession")
