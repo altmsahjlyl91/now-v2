@@ -1,35 +1,19 @@
 import fetch from 'node-fetch';
 
-// دالة لجلب قائمة السور
-const fetchSurahList = async () => {
+const getSurahNumberByName = async (surahName) => {
   try {
-    const response = await fetch(`https://api.quran.sutanlab.id/surah`);
+    const response = await fetch(`https://api.alquran.cloud/v1/surah`);
     const data = await response.json();
-    return data.data;
+    const surah = data.data.find(s => s.englishName.toLowerCase() === surahName.toLowerCase());
+    return surah ? surah.number : null;
   } catch (error) {
     console.error(error);
     return null;
   }
 };
 
-// دالة لجلب بيانات السورة باستخدام الاسم أو الرقم
-const fetchQuranData = async (surahIdentifier) => {
+const fetchQuranData = async (surahNumber) => {
   try {
-    const surahList = await fetchSurahList();
-    if (!surahList) return null;
-
-    let surahNumber;
-    if (isNaN(surahIdentifier)) {
-      const surah = surahList.find(s => 
-        s.name.transliteration.en.toLowerCase() === surahIdentifier.toLowerCase() ||
-        s.name.transliteration.ar.toLowerCase() === surahIdentifier.toLowerCase());
-      if (!surah) return null;
-      surahNumber = surah.number;
-    } else {
-      surahNumber = parseInt(surahIdentifier);
-      if (surahNumber < 1 || surahNumber > 114) return null;
-    }
-
     const response = await fetch(`https://quran-wudy.vercel.app/surah/${surahNumber}`);
     const data = await response.json();
     return data.data.verses;
@@ -39,25 +23,24 @@ const fetchQuranData = async (surahIdentifier) => {
   }
 };
 
-// الدالة الأساسية لمعالجة الرسالة
 const handler = async (m, { conn }) => {
   conn.qurannData = conn.qurannData ? conn.qurannData : {};
 
-  const surahIdentifier = m.text.split(' ')[1];
-  if (!surahIdentifier) {
-    m.reply("❌ اسم أو رقم السورة غير صحيح. يرجى تقديم اسم أو رقم سورة صالح.\n مثال : \n .سوره البقرة أو .سوره 2");
+  const surahName = m.text.split(' ')[1];
+  if (!surahName) {
+    m.reply("❌ يرجى تقديم اسم سورة صالح.\n مثال : \n .سورة الفاتحة");
     return;
   }
 
-  const ayahs = await fetchQuranData(surahIdentifier);
+  const surahNumber = await getSurahNumberByName(surahName);
+  if (!surahNumber) {
+    m.reply("❌ اسم السورة غير صحيح أو لم يتم العثور على السورة.\n يرجى تقديم اسم سورة صالح.\n مثال : \n .سورة الفاتحة");
+    return;
+  }
+
+  const ayahs = await fetchQuranData(surahNumber);
   if (!ayahs) {
-    const surahList = await fetchSurahList();
-    if (surahList) {
-      const surahNames = surahList.map(s => s.name.transliteration.en).join(', ');
-      m.reply(`❌ لم يتم العثور على السورة. يرجى تقديم اسم أو رقم سورة صالح.\n مثال : \n .سوره البقرة أو .سوره 2\n\nالسور المتاحة: ${surahNames}`);
-    } else {
-      m.reply("❌ لم يتم العثور على السورة. يرجى تقديم اسم أو رقم سورة صالح.\n مثال : \n .سوره البقرة أو .سوره 2");
-    }
+    m.reply("Failed to fetch Quran data.");
     return;
   }
 
@@ -67,11 +50,10 @@ const handler = async (m, { conn }) => {
 
   const instructions = "قم بالرد على هذه الرسالة برقم الآية المطلوب لاستقبال الصوت. \n يمكنك زيارة أنستغرام صاحب البوت لمعرفة المزيد عن هذه الميزة \n instagram.com/gl_al.12";
 
-  let { key } = await m.reply(`📖 List of Ayahs in Surah ${surahIdentifier}:\n${formattedList}\n\n${instructions}`);
+  let { key } = await m.reply(`📖 List of Ayahs in Surah ${surahName}:\n${formattedList}\n\n${instructions}`);
   conn.qurannData[m.chat] = { list: Object.values(ayahs), key };
 };
 
-// دالة لمعالجة الرد على الرسالة
 handler.before = async (m, { conn }) => {
   conn.qurannData = conn.qurannData ? conn.qurannData : {};
 
@@ -101,7 +83,6 @@ handler.before = async (m, { conn }) => {
   }
 };
 
-// تعريف الأوامر والمساعدة
 handler.help = ["ayati"];
 handler.tags = ["islam"];
 handler.command = /^(ayati|سورة|سوره)$/i;
