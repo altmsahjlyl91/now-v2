@@ -1,4 +1,3 @@
-
 import fetch from  node-fetch ;
 
 const fetchQuranData = async (surahNumber) => {
