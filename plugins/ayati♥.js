@@ -20,7 +20,9 @@ const fetchQuranData = async (surahIdentifier) => {
 
     let surahNumber;
     if (isNaN(surahIdentifier)) {
-      const surah = surahList.find(s => s.name.transliteration.en.toLowerCase() === surahIdentifier.toLowerCase());
+      const surah = surahList.find(s => 
+        s.name.transliteration.en.toLowerCase() === surahIdentifier.toLowerCase() ||
+        s.name.transliteration.ar.toLowerCase() === surahIdentifier.toLowerCase());
       if (!surah) return null;
       surahNumber = surah.number;
     } else {
@@ -49,7 +51,13 @@ const handler = async (m, { conn }) => {
 
   const ayahs = await fetchQuranData(surahIdentifier);
   if (!ayahs) {
-    m.reply("❌ لم يتم العثور على السورة. يرجى تقديم اسم أو رقم سورة صالح.\n مثال : \n .سوره البقرة أو .سوره 2");
+    const surahList = await fetchSurahList();
+    if (surahList) {
+      const surahNames = surahList.map(s => s.name.transliteration.en).join(', ');
+      m.reply(`❌ لم يتم العثور على السورة. يرجى تقديم اسم أو رقم سورة صالح.\n مثال : \n .سوره البقرة أو .سوره 2\n\nالسور المتاحة: ${surahNames}`);
+    } else {
+      m.reply("❌ لم يتم العثور على السورة. يرجى تقديم اسم أو رقم سورة صالح.\n مثال : \n .سوره البقرة أو .سوره 2");
+    }
     return;
   }
 
