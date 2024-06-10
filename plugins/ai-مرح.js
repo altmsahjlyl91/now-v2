@@ -1,42 +1,26 @@
- 
-import fetch from "node-fetch"
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-    
-        let username = [
-    'c.sol_',
-    'nuriaarancibiaa',
-    'laurasofiadepende',
-    'mariana.30027',
-    'kyarak_',
-    'luly.mix',
-    'melodyvalenzuelar',
-    'michitasnow',
-    'iamjossaryvallejos10',
-    'notaestheticallyhannah_',
-    '_marinazarrocaa_'
-  ]
-  let pickuser = username[Math.floor(Math.random() * username.length)]
-  let query = args[0] ? args[0] : pickuser
-  
+
+import fetch from 'node-fetch'
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+
+ let lang = global.db.data.users[m.sender].language
+  if (!text) throw `✳️ ${mssg.notext}`
+  m.react('🗣️') 
   try { 
-  	let res = await fetch(global.API('fgmods', '/api/img/asupan-tt', { username: query }, 'apikey'))
-     let video = await res.json()
-     //conn.sendFile(m.chat, video.result, 'vid.mp4', ` ${mssg.result}`, m) 
-     conn.sendButton2(m.chat,` ${mssg.result}`, mssg.ig, video.result, [['SIGUIENTE', `${usedPrefix + command}`]], null, null, m) 
-     m.react(dmoji)
-     
-  	 } catch (error) {
-     let img = await conn.getFile(global.API('fgmods', '/api/img/asupan-la', { }, 'apikey'))
-    let asupan = img.data
-    conn.sendFile(m.chat, asupan, 'vid.mp4', ` ${mssg.result}`, m)
-    m.react('🤓')
-  }
+  //let res = await fetch(`https://api.simsimi.vn/v2/?text=${text}&lc=${lang}`)
+  let res = await fetch('https://api.simsimi.vn/v1/simtalk', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `text=${encodeURIComponent(text)}&lc=${lang}&key=`
+  })
+  let json = await res.json()
+  m.reply(json.message.replace('simsimi', `${botName}`).replace('Simsimi', `${botName}`).replace('sim simi', `${botName}`))
+} catch {
+  m.reply(`❎ Intenta de nuevo mas tarde La api de SimSimi se cayo`)
+}
 
 }
-handler.help = ['tvid']
-handler.tags = ['img']
-handler.command = ['مرح', 'tvid', 'videos', 'vid', 'video']
-handler.premium = false
-handler.diamond = true
- 
+handler.help = ['bot']
+handler.tags = ['fun']
+handler.command = ['bot', 'simi'] 
+
 export default handler
