@@ -1,23 +1,25 @@
 import fetch from 'node-fetch';
 
+// مباشرة نستخدم المفتاح اللي زودتنا فيه، بس لا تنسى تحفظه بأمان بعدين
+const YOUR_API_KEY = 'vGLVun.sIkBdzyy13O3zv~Say0mDJFyYsXeaCykA';
+
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   let lang = global.db.data.users[m.sender].language;
-  if (!text) throw `✳️ ${mssg.notext}`;
-
-  // Remove the m.react line, as it's not supported in the current Baileys version
-  // m.react('🗣️'); 
+  if (!text) throw `✳️ ما في نص مدخل. جرب تدخل نص يا ياحوبي!`;
 
   try {
-    //let res = await fetch(`https://api.simsimi.vn/v2/?text=${text}&lc=${lang}`);
     let res = await fetch('https://api.simsimi.vn/v1/simtalk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `text=${encodeURIComponent(text)}&lc=${lang}&key=`
+      body: `text=${encodeURIComponent(text)}&lc=${lang}&key=${YOUR_API_KEY}`
     });
+
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
     let json = await res.json();
-    m.reply(json.message.replace('simsimi', `${botName}`).replace('Simsimi', `${botName}`).replace('sim simi', `${botName}`));
+    await m.reply(json.message.replace(/simsimi/gi, `${botName}`));
   } catch (error) {
-    m.reply(`❎ Intenta de nuevo mas tarde La api de SimSimi se cayo`);
+    await m.reply(`❎ حاول مرة ثانية لاحقًا، شكله السيرفر واقع.`);
   }
 };
 
