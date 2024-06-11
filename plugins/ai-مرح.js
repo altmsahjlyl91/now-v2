@@ -32,5 +32,5 @@ let handler = async (m, { text, command, args, usedPrefix }) => {
   }
   handler.help = ['sim simi']
   handler.tags = ['General']
-  handler.command = ['bot', 'زورو', 'simi'] 
+  handler.command = [''] 
   export default handler
