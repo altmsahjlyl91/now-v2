@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
 import translate from '@vitalets/google-translate-api';
- // Para configurar el idioma, na raiz do projeto altere o arquivo config.json
+ // Para configurar o idioma, na raiz do projeto altere o arquivo config.json
   // Para configurar el idioma, en la raíz del proyecto, modifique el archivo config.json.
   // To set the language, in the root of the project, modify the config.json file.
-
+  
 const handler = (m) => m;
 
 handler.before = async (m) => {
@@ -33,9 +33,7 @@ handler.before = async (m) => {
         return finalResponse;
         };
         let respuesta = await getOpenAIChatCompletion(textodem);
-        // Translate the response to Arabic
-        const translatedResponse = await translate(respuesta, {to: 'ar', autoCorrect: true });
-        m.reply(`${translatedResponse.text}`.trim());
+        m.reply(`${respuesta}`.trim());
         return;
         } catch {    
         try {
@@ -48,9 +46,7 @@ handler.before = async (m) => {
         } catch {
         parsedData1 = fgjson1.result;    
         }    
-        // Translate the response to Arabic
-        const translatedResponse = await translate(parsedData1, {to: 'ar', autoCorrect: true });
-        m.reply(`${translatedResponse.text}`.trim());
+        m.reply(`${parsedData1}`.trim());
         return;    
         } catch {
         try {
@@ -63,9 +59,7 @@ handler.before = async (m) => {
         } catch {
         parsedData2 = vihangaytjson1.data;    
         }            
-        // Translate the response to Arabic
-        const translatedResponse = await translate(parsedData2, {to: 'ar', autoCorrect: true });
-        m.reply(`${translatedResponse.text}`.trim()); 
+        m.reply(`${parsedData2}`.trim()); 
         return;
         } catch {
         try {
@@ -78,9 +72,7 @@ handler.before = async (m) => {
         } catch {
         parsedData3 = vihangaytjson2.data;    
         }            
-        // Translate the response to Arabic
-        const translatedResponse = await translate(parsedData3, {to: 'ar', autoCorrect: true });
-        m.reply(`${translatedResponse.text}`.trim()); 
+        m.reply(`${parsedData3}`.trim()); 
         return;    
         } catch {
         try {    
@@ -93,9 +85,7 @@ handler.before = async (m) => {
         } catch {    
         parsedData4 = vihangaytjson3.data;    
         }            
-        // Translate the response to Arabic
-        const translatedResponse = await translate(parsedData4, {to: 'ar', autoCorrect: true });
-        m.reply(`${translatedResponse.text}`.trim()); 
+        m.reply(`${parsedData4}`.trim()); 
         return;    
         } catch {    
         const akuariapi2 = await fetch(`https://api.akuari.my.id/ai/gpt?chat=${textodem}`);
@@ -106,10 +96,8 @@ handler.before = async (m) => {
         } catch {
         parsedData5 = akuariapijson2.respon;    
         }            
-        const akuariapiresult2 = await translate(`${parsedData5}`, {to: 'ar', autoCorrect: true}); // تغيرت هذه الخطوة
-        // Translate the response to Arabic
-        const translatedResponse = await translate(akuariapiresult2.text, {to: 'ar', autoCorrect: true });
-        m.reply(`${translatedResponse.text}`.trim());  
+        const akuariapiresult2 = await translate(`${parsedData5}`, {to: 'es', autoCorrect: true});
+        m.reply(`${akuariapiresult2.text}`.trim());  
         return;    
         }     
        }
