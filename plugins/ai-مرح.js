@@ -26,7 +26,7 @@
     let res222 = await fetch(`https://violetics.pw/api/utility/simsimi?apikey=beta&text=${resuuu[0][0][0]}`)  
     let json222 = await res222.json()
     let resulttt = json222.result
-    let lolll = await translate(`${resulttt}`, { to: 'es', autoCorrect: true })
+    let lolll = await translate(`${resulttt}`, { to: 'ar', autoCorrect: true })
     m.reply(lolll.text)      
     }}
   }
