@@ -10,6 +10,8 @@ handler.before = async (m) => {
     try {
       const ressimi = await fetch(`https://api.simsimi.net/v2/?text=${encodeURIComponent(textodem)}&lc=ar`);
       const data = await ressimi.json();
+      // If you don't want to send a message in this scenario, just remove the following line:
+      // if (data.success == 'No s\u00e9 lo qu\u00e9 est\u00e1s diciendo. Por favor ense\u00f1ame.') return m.reply(`${lol}`); 
       // Translate Simsimi's response to Arabic
       const translatedResponse = await translate(data.success, { from: 'en', to: 'ar' }); 
       await m.reply(translatedResponse.text); // Send the translated response
