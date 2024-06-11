@@ -1,6 +1,6 @@
-import { watchFile, unwatchFile } from 'fs';
+import {watchFile, unwatchFile} from 'fs';
 import chalk from 'chalk';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 import fs from 'fs'; 
 import cheerio from 'cheerio';
 import fetch from 'node-fetch';
