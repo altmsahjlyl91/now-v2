@@ -87,7 +87,7 @@ global.flaaa = [
 ];
 //* ************************
 // تم إضافة إعدادات لمفتاح OpenAI وإعدادات ChatGPT
-global.openai_key = 'YOUR_OPENAI_API_KEY';  // تأكد من استبدال 'YOUR_OPENAI_API_KEY' بالمفتاح الفعلي الخاص بك
+global.openai_key = 'openaiAPIKey';  // تأكد من استبدال 'YOUR_OPENAI_API_KEY' بالمفتاح الفعلي الخاص بك
 global.chatgpt = {
   max_tokens: 150,  // عدد الكلمات الأقصى في الرد
   temperature: 0.7,  // معدل الإبداع في الردود
