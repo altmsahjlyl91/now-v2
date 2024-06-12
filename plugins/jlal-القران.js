@@ -1,55 +1,73 @@
 import fetch from 'node-fetch'
 import { translate } from '@vitalets/google-translate-api'
 
-const BASE_URL = 'https://bible-api.com'
-
-let bibleChapterHandler = async (m, { conn }) => {
+let quranSurahHandler = async (m, { conn }) => {
   try {
-    // Extract the chapter number or name from the command text.
-    let chapterInput = m.text.split(' ').slice(1).join('').trim()
+    // Extract the surah number or name from the command text.
+    let surahInput = m.text.split(' ')[1]
 
-    if (!chapterInput) {
-      throw new Error(`Please specify the chapter number or name. Example: -bible john 3:16`)
+    if (!surahInput) {
+      throw new Error(`Please specify the surah number or name`)
     }
 
-    // Encode the chapterInput to handle special characters
-    chapterInput = encodeURIComponent(chapterInput)
+    let surahListRes = await fetch('https://quran-endpoint.vercel.app/quran')
+    let surahList = await surahListRes.json()
 
-    // Make an API request to fetch the chapter information.
-    let chapterRes = await fetch(`${BASE_URL}/${chapterInput}`)
+    let surahData = surahList.data.find(
+      surah =>
+        surah.number === Number(surahInput) ||
+        surah.asma.ar.short.toLowerCase() === surahInput.toLowerCase() ||
+        surah.asma.en.short.toLowerCase() === surahInput.toLowerCase()
+    )
 
-    if (!chapterRes.ok) {
-      throw new Error(`Please specify the chapter number or name. Example: -bible john 3:16`)
+    if (!surahData) {
+      throw new Error(`Couldn't find surah with number or name "${surahInput}"`)
     }
 
-    let chapterData = await chapterRes.json()
+    let res = await fetch(`https://quran-endpoint.vercel.app/quran/${surahData.number}`)
 
-    let translatedChapterHindi = await translate(chapterData.text, { to: 'hi', autoCorrect: true })
+    if (!res.ok) {
+      let error = await res.json()
+      throw new Error(`API request failed with status ${res.status} and message ${error.message}`)
+    }
 
-    let translatedChapterEnglish = await translate(chapterData.text, {
+    let json = await res.json()
+
+    // Translate tafsir from Bahasa Indonesia to Urdu
+    let translatedTafsirUrdu = await translate(json.data.tafsir.id, { to: 'ur', autoCorrect: true })
+
+    // Translate tafsir from Bahasa Indonesia to English
+    let translatedTafsirEnglish = await translate(json.data.tafsir.id, {
       to: 'en',
       autoCorrect: true,
     })
 
-    let bibleChapter = `
-📖 *The Holy Bible*\n
-📜 *Chapter ${chapterData.reference}*\n
-Type: ${chapterData.translation_name}\n
-Number of verses: ${chapterData.verses.length}\n
-🔮 *Chapter Content (English):*\n
-${translatedChapterEnglish.text}\n
-🔮 *Chapter Content (Hindi):*\n
-${translatedChapterHindi.text}`
+    let quranSurah = `
+🕌 *Quran: The Holy Book*\n
+📜 *Surah ${json.data.number}: ${json.data.asma.ar.long} (${json.data.asma.en.long})*\n
+Type: ${json.data.type.en}\n
+Number of verses: ${json.data.ayahCount}\n
+🔮 *Explanation (Urdu):*\n
+${translatedTafsirUrdu.text}\n
+🔮 *Explanation (English):*\n
+${translatedTafsirEnglish.text}`
 
-    m.reply(bibleChapter)
+    m.reply(quranSurah)
+
+    if (json.data.recitation.full) {
+      conn.sendFile(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, {
+        type: 'audioMessage',
+        ptt: true,
+      })
+    }
   } catch (error) {
     console.error(error)
     m.reply(`Error: ${error.message}`)
   }
 }
 
-bibleChapterHandler.help = ['bible [chapter_number|chapter_name]']
-bibleChapterHandler.tags = ['religion']
-bibleChapterHandler.command = ['bible', 'chapter']
+quranSurahHandler.help = ['quran [surah_number|surah_name]']
+quranSurahHandler.tags = ['quran', 'surah']
+quranSurahHandler.command = ['quran', 'surah']
 
-export default bibleChapterHandler
+export default quranSurahHandler
