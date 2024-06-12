@@ -1,26 +1,17 @@
-import fetch from  node-fetch ;
-
-// النصوص الثابتة
-const translations = {
-  ar: {
-    bk9LText_T: "يرجى تقديم رابط لإنشاء الرابط المختصر!",
-    bk9LTaked_T: "تم إنشاء الرابط المختصر بنجاح!",
-    bk9err: "حدث خطأ أثناء معالجة الرابط!"
-  },
-  en: {
-    bk9LText_T: "Please provide a link to create a short link!",
-    bk9LTaked_T: "Short link created successfully!",
-    bk9err: "An error occurred while processing the link!"
-  }
-};
-
 let handler = async function (m, { text }) {
-  // اللغة الافتراضية
-  const defaultLanguage =  en ;
-  const idioma = defaultLanguage;
 
-  // النصوص المترجمة للغة المحددة
-  const tradutor = translations[idioma];
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  let tradutor;
+  if(idioma === 'arabic') {
+    tradutor = {
+      bk9LText_T: 'الرجاء إدخال رابط لاختصاره.',
+      bk9LTaked_T: 'تم بالفعل اختصار الرابط المقدم.',
+      bk9err: 'حدث خطأ ما، الرجاء المحاولة مرة أخرى لاحقًا.'
+    };
+  } else {
+    // تعريف ترجمات للغات الأخرى هنا
+  }
 
   try {
     if (!text) {
@@ -44,6 +35,6 @@ let handler = async function (m, { text }) {
   }
 };
 
-handler.command = [ قص ];
-handler.tags = [ tools ];
+handler.command = ['قص'];
+handler.tags = ['tools'];
 export default handler;
