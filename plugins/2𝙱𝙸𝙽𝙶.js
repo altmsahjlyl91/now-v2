@@ -54,7 +54,7 @@ const handler = async (m, {conn, text, command}) => {
     } catch (error) {
       throw `${tradutor.bk9err}`;
     }
-  } else if (command === 'حلل صورة') {
+  } else if (command === 'حلل_صورة') {
     let BK7 = m.quoted ? m.quoted : m;
     let BK8 = (BK7.msg || BK7).mimetype || BK7.mediaType || '';
 
@@ -79,6 +79,6 @@ const handler = async (m, {conn, text, command}) => {
   }
 };
 
-handler.command = ['تخيل2', 'bk9', 'حلل صورة'];
+handler.command = ['تخيل2', 'bk9', 'حلل_صورة'];
 handler.tags = ['ai'];
 export default handler;
