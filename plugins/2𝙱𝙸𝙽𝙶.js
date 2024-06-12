@@ -15,27 +15,29 @@ const handlerBK9Img = async (m, {conn, text, command}) => {
   };
   const tradutor = translations[idioma].BK9.BK9;
 
-    let BK7 = m.quoted ? m.quoted : m;
-    let BK8 = (BK7.msg || BK7).mimetype || BK7.mediaType || '';
+  let BK7 = m.quoted ? m.quoted : m;
+  let BK8 = (BK7.msg || BK7).mimetype || BK7.mediaType || '';
 
-    if (/image/g.test(BK8) && !/webp/g.test(BK8)) {
-      try {
-        await conn.sendMessage(m.chat, {text: 'جاري تحميل الصورة...'}, {quoted: m});
-        let BK0 = await BK7.download();
-        let BK9img = await uploader(BK0);
-        await conn.sendMessage(m.chat, {text: 'تم تحميل الصورة بنجاح، جاري المعالجة...'}, {quoted: m});
-        let BK9api = await (await fetch(`https://api.bk9.site/ai/geminiimg?url=${BK9img}&q=${encodeURIComponent(encodeURIComponent(text))}`)).json();
-        if (BK9api.status && BK9api.BK9) {
-          await conn.sendMessage(m.chat, { text: BK9api.BK9 }, {quoted: m});
-        } else {
-          throw `${tradutor.bk9err}`;
-        }
-      } catch (error) {
-        await conn.sendMessage(m.chat, {text: tradutor.bk9err}, {quoted: m});
+  if (/image/g.test(BK8) && !/webp/g.test(BK8)) {
+    try {
+      await conn.sendMessage(m.chat, {text: 'جاري تحميل الصورة...'}, {quoted: m});
+      let BK0 = await BK7.download();
+      let BK9img = await uploader(BK0);
+      await conn.sendMessage(m.chat, {text: 'تم تحميل الصورة بنجاح، جاري المعالجة...'}, {quoted: m});
+      
+      let BK9apiResponse = await fetch(`https://api.bk9.site/ai/geminiimg?url=${BK9img}&q=${encodeURIComponent(encodeURIComponent(text))}`);
+      let BK9api = await BK9apiResponse.json();
+
+      if (BK9api.status && BK9api.BK9) {
+        await conn.sendMessage(m.chat, { text: BK9api.BK9 }, {quoted: m});
+      } else {
+        throw new Error(tradutor.bk9err);
       }
-    } else {
-      throw `${tradutor.bk9imgtext}`;
+    } catch (error) {
+      await conn.sendMessage(m.chat, {text: tradutor.bk9err}, {quoted: m});
     }
+  } else {
+    await conn.sendMessage(m.chat, {text: tradutor.bk9imgtext}, {quoted: m});
   }
 };
 
