@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-
+import uploader from '../lib/uploadImage.js';
 var handler = async (m, { text, usedPrefix, command }) => {
     if (!text) throw `*يرجى وضع نص او صورة للرد عليه.*\n\n*❏ لمزيد من الأمثلة والأوامر يرجى استخدام*\n*${usedPrefix + command} أو ${usedPrefix + command} أو ${usedPrefix + command}*`;
     try {
