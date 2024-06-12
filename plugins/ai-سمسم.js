@@ -35,6 +35,6 @@ let handler = async (m, { text, command, args, usedPrefix }) => {
 
 handler.help = ['sim simi']
 handler.tags = ['General']
-handler.command = /^(bot|سمسم|..|.)$/i;
+handler.command = /^(bot|سمسم)$/i;
 
 export default handler
