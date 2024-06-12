@@ -1,4 +1,5 @@
 import fetch from 'node-fetch'
+import uploader from '../lib/uploadImage.js'
 
 var handler = async (m, { conn, text, command, usedPrefix }) => {
 
@@ -14,13 +15,13 @@ let json = await (await fetch(`https://aemt.me/bardimg?url=${media}&text=${text}
 
 conn.sendMessage(m.chat, { text: json.result }, { quoted: m })
 
-} else throw `RESPONDE A UNA IMAGEN CON UN TEXTO\n\nEJEMPLO\n${usedPrefix + command} dame información sobre la imagen enviada`
+} else throw `*قم بالرد على الصورة التي تريد أن أقرأ محتواها*\n\nمثال\n${usedPrefix + command} أعطني معلومات عن الصورة المرسلة`
   
 }
 handler.help = ['bardimg', 'geminiimg']
 handler.tags = ['herramientas']
-handler.command = /^(bardimg|2تحليل|geminiimg|geminiimage|geminimg|geminimage)$/i
+handler.command = /^(تحليل|geminiimage|geminimg|geminimage|bardimg)$/i
 
-handler.limit = true
+handler.limit = false
 
 export default handler
