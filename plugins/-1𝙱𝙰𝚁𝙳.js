@@ -14,7 +14,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
         var res = await apiResponse.json();
         await m.reply(res.result);
     } catch (error) {
-        await conn.reply(m.chat, '*حدث خطأ أثناء المعالجة.*\n\n*يرجى التبليغ عن هذا الخطأ باستخدام*\n*#report ' + usedPrefix + command + '*\n\n' + wm, fkontak, m);
+        await conn.reply(m.chat, '*حدث خطأ أثناء المعالجة.*\n\n*يرجى التبليغ عن هذا الخطأ باستخدام*\n*#report ' + usedPrefix + command + '*\n\n' + wm, m);
         console.log(`❗❗ حدث خطأ أثناء تنفيذ ${usedPrefix + command} ❗❗`);
         console.error(error);
     }
