@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+/*import fetch from 'node-fetch';
 import fs from 'fs';
 import uploader from '../lib/uploadImage.js';
 
@@ -21,7 +21,7 @@ const handler = async (m, {conn, text, command}) => {
 
   const tradutor = translations[idioma].BK9.BK9;
 
-  if (command === 'bk9dalle') {
+  if (command === 'تخيل') {
     if (!text) throw `${tradutor.bk9dalletext}`;
 
     await conn.sendMessage(m.chat, {text: tradutor.bk9dallewait}, {quoted: m});
@@ -68,6 +68,7 @@ const handler = async (m, {conn, text, command}) => {
   }
 };
 
-handler.command = ['bk9dalle', 'bk9', 'bk9img'];
+handler.command = ['تخيل', 'bk9', 'bk9img'];
 handler.tags = ['ai'];
 export default handler;
+*/ 
