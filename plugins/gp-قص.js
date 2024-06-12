@@ -1,13 +1,13 @@
 let handler = async function (m, { text }) {
 
-  const datas = global
-  const idioma = datas.db.data.users[m.sender].language
+  const datas = global;
+  const idioma = datas.db.data.users[m.sender].language;
   let tradutor;
-  if(idioma === 'arabic') {
+  if(idioma === 'ar') {
     tradutor = {
-      bk9LText_T: 'الرجاء إدخال رابط لاختصاره.',
-      bk9LTaked_T: 'تم بالفعل اختصار الرابط المقدم.',
-      bk9err: 'حدث خطأ ما، الرجاء المحاولة مرة أخرى لاحقًا.'
+      bk9LText_T: "الرجاء إدخال رابط لاختصاره.",
+      bk9LTaked_T: "تم بالفعل اختصار الرابط المقدم.",
+      bk9err: "حدث خطأ ما، الرجاء المحاولة مرة أخرى لاحقًا."
     };
   } else {
     // تعريف ترجمات للغات الأخرى هنا
@@ -35,6 +35,6 @@ let handler = async function (m, { text }) {
   }
 };
 
-handler.command = ['قص'];
+handler.command = ['bk9short'];
 handler.tags = ['tools'];
 export default handler;
