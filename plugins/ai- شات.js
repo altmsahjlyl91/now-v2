@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-let gitagptHandler = async (m, { conn, text, usedPrefix, command }) => {
+let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text && !(m.quoted && m.quoted.text)) {
     throw 'يرجى تقديم نص أو اقتباس رسالة للحصول على استجابة. تذكر أن GitaGPT لا يزال في مرحلة الاختبار، لذا قد يولد استجابات غير دقيقة في بعض الأحيان.';
   }
@@ -25,9 +25,9 @@ let gitagptHandler = async (m, { conn, text, usedPrefix, command }) => {
   }
 }
 
-gitagptHandler.help = ['gitagpt'];
-gitagptHandler.tags = ['AI'];
-gitagptHandler.command = ['شات'];
-gitagptHandler.diamond = false;
+handler.help = ['gitagpt'];
+handler.tags = ['AI'];
+handler.command = ['شات'];
+handler.diamond = false;
 
-export default gitagptHandler;
+export default handler;
