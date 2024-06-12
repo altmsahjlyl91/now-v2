@@ -14,7 +14,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
     }
 };
 
-handler.command = ['تحليل', 'bard'];
+handler.command = ['جيمي', 'bard'];
 handler.help = ['تحليل', 'bard'];
 handler.tags = ['أدوات'];
 handler.premium = false;
