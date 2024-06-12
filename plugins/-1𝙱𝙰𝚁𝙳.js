@@ -1,10 +1,16 @@
 import fetch from 'node-fetch';
 
 var handler = async (m, { text, usedPrefix, command }) => {
-    if (!text) throw `*يرجى وضع نص او صورة للرد عليه.*\n\n*❏ لمزيد من الأمثلة والأوامر يرجى استخدام*\n*${usedPrefix + command} أو ${usedPrefix + command} أو ${usedPrefix + command}*`;
+    if (!text && !m.quoted) throw `*يرجى وضع نص أو الرد على صورة لتحليلها.*\n\n*❏ لمزيد من الأمثلة والأوامر يرجى استخدام*\n*${usedPrefix + command} أو ${usedPrefix + command} أو ${usedPrefix + command}*`;
+    
+    let inputText = text;
+    if (m.quoted && m.quoted.mtype === 'imageMessage') {
+        inputText = await m.quoted.download();
+    }
+    
     try {
         conn.sendPresenceUpdate('composing', m.chat);
-        var apiResponse = await fetch(`https://aemt.me/gemini?text=${encodeURIComponent(text)}`);
+        var apiResponse = await fetch(`https://aemt.me/gemini?text=${encodeURIComponent(inputText)}`);
         var res = await apiResponse.json();
         await m.reply(res.result);
     } catch (error) {
