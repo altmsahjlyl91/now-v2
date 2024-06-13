@@ -49,6 +49,7 @@ const handler = async (message, { conn, args, usedPrefix, command }) => {
   const year = birthDate.getFullYear();
   const weekday = birthDate.toLocaleString('ar-EG', { weekday: 'long' });
   const zodiacSign = getZodiacSign(day, month);
+  const today = new Date();
 
   const messageText = `
 عمرك الآن: ${age} سنوات / ${today.getMonth() - birthDate.getMonth()} شهور / ${today.getDate() - birthDate.getDate()} أيام
