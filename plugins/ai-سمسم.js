@@ -5,7 +5,7 @@ let handler = async (m, { text, command, args, usedPrefix }) => {
     if (!text) throw `اكتب نصا للتحدث معي\nمثال: ${usedPrefix + command} مرحبا*`
     try {
         await conn.sendPresenceUpdate('composing', m.chat)
-        let api = await fetch("https://api.simsimi.net/v2/?text=" + text + "&lc=ar")
+        let api = await fetch("https://api.simsimi.vn/v1/simtalk" + text + "&lc=ar")
         let resSimi = await api.json()
         m.reply(resSimi.success)
     } catch {
