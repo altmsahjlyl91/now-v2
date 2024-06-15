@@ -1,29 +1,77 @@
-import translate from '@vitalets/google-translate-api';
 import fetch from 'node-fetch';
-const handler = async (m, {text, command, args, usedPrefix}) => {
-  if (!text) return conn.reply(m.chat, `🍭 Ingresa un texto para empezar a hablar con la Bot.`, m)
+
+let handler = async (m, { text, conn, usedPrefix, command }) => {
+  if (!text && !(m.quoted && m.quoted.text)) {
+    throw `يرجى تقديم بعض النص أو اقتباس رسالة للحصول على رد.`;
+  }
+
+  if (!text && m.quoted && m.quoted.text) {
+    text = m.quoted.text;
+  }
+
   try {
-    const api = await fetch('https://api.simsimi.net/v2/?text=' + text + '&lc=ar');
-    const resSimi = await api.json();
-    m.reply(resSimi.success);
-  } catch {
+    m.react(rwait)
+    const { key } = await conn.sendMessage(m.chat, {
+      image: { url: 'https://telegra.ph/file/c3f9e4124de1f31c1c6ae.jpg' },
+      caption: 'Thinking....'
+    }, {quoted: m})
+    conn.sendPresenceUpdate('composing', m.chat);
+    const prompt = encodeURIComponent(text);
+
+    const guru1 = `${gurubot}/chatgpt?text=${prompt}`;
+    
     try {
-      if (text.includes('Hola')) text = text.replace('Hola', 'Hello');
-      if (text.includes('hola')) text = text.replace('hola', 'Hello');
-      if (text.includes('HOLA')) text = text.replace('HOLA', 'HELLO');
-      const reis = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=' + text);
-      const resu = await reis.json();
-      const nama = m.pushName || '1';
-      const api = await fetch('http://api.brainshop.ai/get?bid=153868&key=rcKonOgrUFmn5usX&uid=' + nama + '&msg=' + resu[0][0][0]);
-      const res = await api.json();
-      const reis2 = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ar&dt=t&q=' + res.cnt);
-      const resu2 = await reis2.json();
-      await conn.reply(m.chat, resu2[0][0][0], m, adReply)
-    } catch {
+      let response = await fetch(guru1);
+      let data = await response.json();
+      let result = data.result;
+
+      if (!result) {
+        
+        throw new Error('No valid JSON response from the first API');
+      }
+
+      await conn.relayMessage(m.chat, {
+        protocolMessage: {
+          key,
+          type: 14,
+          editedMessage: {
+            imageMessage: { caption: result }
+          }
+        }
+      }, {});
+      m.react(done);
+    } catch (error) {
+      console.error('Error from the first API:', error);
+
+  
+      const model = 'llama';
+      const senderNumber = m.sender.replace(/[^0-9]/g, ''); 
+      const session = `شعبوط_${senderNumber}`;
+      const guru2 = `https://api.lolhuman.xyz/api/openai?apikey=${lolkeysapi}&text=${text}&user=user-unique-id prompt=${prompt}`;
+      
+      let response = await fetch(guru2);
+      let data = await response.json();
+      let result = data.completion;
+
+      await conn.relayMessage(m.chat, {
+        protocolMessage: {
+          key,
+          type: 14,
+          editedMessage: {
+            imageMessage: { caption: result }
+          }
+        }
+      }, {});
+      m.react(done);
     }
+
+  } catch (error) {
+    console.error('Error:', error);
+    throw `*ERROR*`;
   }
 };
-handler.help = ['simi', 'bot']
-handler.tags = ['fun'];
-handler.command = /^((sim)?simi|bot|alexa|cortana)$/i;
+handler.help = ['chatgpt']
+handler.tags = ['AI']
+handler.command = ['خربان', 'خرب', 'معرف_حل', 'صلحلي_ذا'];
+
 export default handler;
