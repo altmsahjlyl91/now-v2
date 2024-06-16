@@ -95,8 +95,8 @@ const handler = async (m, {conn, command, args, text, usedPrefix}) => {
     throw `${tradutor.texto6}}`;
   }
 };
-handler.help = ['play', 'play2'].map((v) => v + ' < busqueda >');
-handler.tags = ['downloader'];
+handler.help = ['شغل', 'فيديو'].map((v) => v + ' < busqueda >');
+handler.tags = ['dl'];
 handler.command = /^(شغل|فيديو|play|play2)$/i;
 export default handler;
 
