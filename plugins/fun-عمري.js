@@ -1,4 +1,5 @@
-const calculateAge = (birthday) => {
+/*
+  const calculateAge = (birthday) => {
   const [year, month, day] = birthday.split('-');
   const birthDate = new Date(year, month - 1, day);
   const today = new Date();
@@ -70,3 +71,4 @@ handler.command = /^(age|عمري)$/i;
 handler.limit = false;
 
 export default handler;
+*/
