@@ -1,8 +1,28 @@
-let handler = async (m, { conn }) => {
+// الدالة الأولى: إرسال نص كصورة باستخدام واجهة برمجة التطبيقات
+let handlerTxt = async (m, { conn, text, usedPrefix, command }) => {
+    let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : '';
+    if (!teks) throw `📝 ماذا أكتب؟ مثال: *${usedPrefix + command}* Hello my friend `;
+    
+    // إزالة التفاعل بسبب الخطأ
+    // m.react(rwait)
+
+    let img = global.API('fgmods', '/api/maker/txt', { text: teks }, 'apikey');
+    await conn.sendFile(m.chat, img, 'img.png', `✅ إنه أفضل مما تكتبه أنت ✍🏻`, m);
+    
+    // إزالة التفاعل بسبب الخطأ
+    // m.react(done)
+};
+
+handlerTxt.help = ['txt'];
+handlerTxt.tags = ['fun'];
+handlerTxt.command = ['اكتب'];
+
+// الدالة الثانية: لعبة المتفجرات
+let handlerBomb = async (m, { conn }) => {
     // التأكد من وجود متغير conn.bomb
     conn.bomb = conn.bomb || {};
     let id = m.chat,
-        timeout = 180000;
+        timeout = 180000; // 3 دقائق
 
     // التحقق من وجود لعبة جارية في الدردشة
     if (id in conn.bomb) {
@@ -45,8 +65,8 @@ let handler = async (m, { conn }) => {
     ];
 };
 
-handler.help = ["متفجرات"];
-handler.tags = ["لعبة"];
-handler.command = /^(متفجرات)$/i;
+handlerBomb.help = ["متفجرات"];
+handlerBomb.tags = ["لعبة"];
+handlerBomb.command = /^(متفجرات)$/i;
 
-export default handler;
+export { handlerTxt, handlerBomb };
