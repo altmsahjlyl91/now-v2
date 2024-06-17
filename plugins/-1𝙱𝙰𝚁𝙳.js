@@ -36,7 +36,7 @@ let handler = async (_0x4f9075, {
     throw "*❆━━━═⏣⊰🦇⊱⏣═━━━❆*\n\n*🦇⤺┇يحب شعبوط*\n\n*❆━━━═⏣⊰🦇⊱⏣═━━━❆*";
   }
 };
-handler.help = ["googlegenai"];
-handler.tags = ['AI'];
+handler.help = ["bard"];
+handler.tags = ['ai'];
 handler.command = ["bard"];
 export default handler;
