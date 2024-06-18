@@ -1,4 +1,4 @@
-let handlerBomb = async (m, { conn }) => {
+ let handlerBomb = async (m, { conn }) => {
     // التأكد من وجود متغير conn.bomb
     conn.bomb = conn.bomb || {};
     let id = m.chat,
