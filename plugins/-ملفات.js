@@ -21,6 +21,6 @@ await fs.renameSync(`./plugins/${from}.js`, `./plugins/${to}.js`)
 conn.reply(m.chat, `Success changes "plugins/${from}.js" to "plugins/${to}.js"`, m)
 }
 handler.help = [ renameplugin ].map(_=> _ + " *<old name> | <new name>*")
-handler.command = /^(r(ename(file)?|f)|rn)$/i
+handler.command = /^(ملفات)$/i
 handler.owner = true
 export default handler
