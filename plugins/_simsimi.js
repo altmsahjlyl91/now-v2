@@ -1,32 +1,50 @@
 import fetch from 'node-fetch';
+
 const handler = (m) => m;
 
 handler.before = async (m) => {
   const chat = global.db.data.chats[m.chat];
   if (chat.simi) {
-    if (/^.*false|disnable|(turn)?off|0/i.test(m.text)) return;
+    if (/^.*false|disable|(turn)?off|0/i.test(m.text)) return;
+
     let textodem = m.text;
+
     try {
       const ressimi = await fetch(`https://api.simsimi.net/v2/?text=${encodeURIComponent(textodem)}&lc=ar`);
       const data = await ressimi.json();
-      if (data.success == 'No s\u00e9 lo qu\u00e9 est\u00e1s diciendo. Por favor ense\u00f1ame.') return m.reply(`${lol}`); /* EL TEXTO "lol" NO ESTA DEFINIDO PARA DAR ERROR Y USAR LA OTRA API */
+      
+      if (data.success === 'No sé lo qué estás diciendo. Por favor enséñame.') {
+        throw new Error('Simsimi did not understand the input');
+      }
+
       await m.reply(data.success);
-    } catch {
-      /* SI DA ERROR USARA ESTA OTRA OPCION DE API DE IA QUE RECUERDA EL NOMBRE DE LA PERSONA */
-      if (textodem.includes('Hola')) textodem = textodem.replace('Hola', 'Hello');
-      if (textodem.includes('hola')) textodem = textodem.replace('hola', 'hello');
-      if (textodem.includes('HOLA')) textodem = textodem.replace('HOLA', 'HELLO');
-      const reis = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=' + textodem);
-      const resu = await reis.json();
-      const nama = m.pushName || '1';
-      const api = await fetch('http://api.brainshop.ai/get?bid=153868&key=rcKonOgrUFmn5usX&uid=' + nama + '&msg=' + resu[0][0][0]);
-      const res = await api.json();
-      const reis2 = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ar&dt=t&q=' + res.cnt);
-      const resu2 = await reis2.json();
-      await m.reply(resu2[0][0][0]);
+    } catch (error) {
+      try {
+        // ترجمة النص إلى الإنجليزية
+        const translateRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(textodem)}`);
+        const translateData = await translateRes.json();
+        const translatedText = translateData[0][0][0];
+
+        // إرسال النص المترجم إلى Brainshop API
+        const name = m.pushName || '1';
+        const brainRes = await fetch(`http://api.brainshop.ai/get?bid=153868&key=rcKonOgrUFmn5usX&uid=${name}&msg=${encodeURIComponent(translatedText)}`);
+        const brainData = await brainRes.json();
+
+        // ترجمة الرد إلى العربية
+        const translateBackRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ar&dt=t&q=${encodeURIComponent(brainData.cnt)}`);
+        const translateBackData = await translateBackRes.json();
+        const finalText = translateBackData[0][0][0];
+
+        await m.reply(finalText);
+      } catch (finalError) {
+        await m.reply('حدث خطأ أثناء معالجة طلبك، حاول مرة أخرى لاحقًا.');
+      }
     }
-    return !0;
+    
+    return true; // استخدام 'true' بدلاً من '!0' للوضوح
   }
+  
   return true;
 };
+
 export default handler;
