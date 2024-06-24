@@ -26,7 +26,7 @@ handler.before = async (m) => {
         const translatedText = translateData[0][0][0];
 
         // إرسال النص المترجم إلى Brainshop API
-        const name = m.pushName || '1';
+        const name = m.pushName || 'شعبوط بوت';
         const brainRes = await fetch(`http://api.brainshop.ai/get?bid=153868&key=rcKonOgrUFmn5usX&uid=${name}&msg=${encodeURIComponent(translatedText)}`);
         const brainData = await brainRes.json();
 
