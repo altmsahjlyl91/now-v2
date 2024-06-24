@@ -8,8 +8,9 @@ await conn.sendFile(m.chat, dl_url,  thumbnail.jpg , null, m)
 m.react(done)
 } catch {
 }}
-handler.help = [ "pinterest <texto>" ]
-handler.tags = [ "internet" ]
-handler.command = ["صور"]
+handler.help = [ pinterest <texto> ]
+handler.tags = [ internet ]
+handler.command = [ pinterest ]
+handler.limit = 1
 handler.register = true
 export default handler
