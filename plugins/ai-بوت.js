@@ -1,39 +1,50 @@
-import fetch from 'node-fetch';
+import fetch from "node-fetch"
 
-const handlerBK9 = async (m, {conn, text, command}) => {
-  const idioma = 'ar';
-  const translations = {
-    ar: {
-      BK9: {
-        BK9: {
-          bk9text: "يرجى تقديم نص للاستجابة!",
-          bk9err: "حدث خطأ أثناء معالجة النص!"
-        }
-      }
-    }
-  };
-  const tradutor = translations[idioma].BK9.BK9;
-
-  if (command === 'بوت') {
-    if (!text) throw `${tradutor.bk9text}`;
-
+let handler = async (m, {
+    conn,
+    args,
+    usedPrefix,
+    command
+}) => {
+    let text
+    if (args.length >= 1) {
+        text = args.slice(0).join(" ")
+    } else if (m.quoted && m.quoted.text) {
+        text = m.quoted.text
+    } else throw "ادخل نص للأستجابة!"
+    await m.reply(wait)
+    const messages = [
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: text },
+  ];
     try {
-      conn.sendPresenceUpdate('composing', m.chat);
-      const BK9api = `https://api.bk9.site/ai/gpt4?q=${encodeURIComponent(encodeURIComponent(text))}`;
-      const BK99 = await fetch(BK9api);
-      const BK8 = await BK99.json();
-      if (BK8.status && BK8.BK9) {
-        const respuestaAPI = BK8.BK9;
-        conn.reply(m.chat, respuestaAPI, m);
-      } else {
-        throw `${tradutor.bk9err}`;
-      }
-    } catch (error) {
-      throw `${tradutor.bk9err}`;
+        let res = await chatWithGPT(messages)
+        await m.reply(res.choices[0].message.content)
+    } catch (e) {
+        await m.reply('error')
     }
-  }
-};
+}
+handler.help = ["بوت"]
+handler.tags = ["ai"];
+handler.command = /^(بوت)$/i
 
-handlerBK9.command = ['بوت'];
-handlerBK9.tags = ['ai'];
-export default handlerBK9;
+export default handler
+
+/* New Line */
+async function chatWithGPT(messages) {
+    try {
+        const response = await fetch("https://chatbot-ji1z.onrender.com/chatbot-ji1z", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ messages }),
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
+}
