@@ -1,4 +1,4 @@
-import _0x3ec5fb from 'node-fetch';
+ import _0x3ec5fb from 'node-fetch';
 import _0xdcffbe from '../lib/uploadImage.js';
 let handler = async (_0x4f9075, {
   text: text,
@@ -33,10 +33,10 @@ let handler = async (_0x4f9075, {
   } catch (error) {
     console.error("Error:", error);
     // Fix Arabic error message
-    throw "*❆━━━═⏣⊰🦇⊱⏣═━━━❆*\n\n*🦇⤺┇ ايرور يحب*\n\n*❆━━━═⏣⊰🦇⊱⏣═━━━❆*";
+    throw "*❆━━━═⏣⊰🦇⊱⏣═━━━❆*\n\n*🦇⤺┇يحب شعبوط*\n\n*❆━━━═⏣⊰🦇⊱⏣═━━━❆*";
   }
 };
-handler.help = ["googlegenai"];
-handler.tags = ['AI'];
-handler.command = ["جيمي", "googlegenai", "gemini", "جيميناي', "انهار"];
+handler.help = ["bard"];
+handler.tags = ['ai'];
+handler.command = ["bard","انهار"];
 export default handler;
