@@ -37,9 +37,9 @@ throw '⚠️ *OCURRIÓ UN ERROR*'
 
 }
 
-handler.command = ['bard']
+handler.command = ['bard1']
 
-handler.help = ['bard']
+handler.help = ['bard1']
 
 handler.tags = ['ai']
 
