@@ -9,6 +9,7 @@ import chalk from 'chalk';
 import mddd5 from 'md5';
 import ws from 'ws';
 let mconn;
+
 /**
  * @type {import('@whiskeysockets/baileys')}
  */
@@ -46,13 +47,14 @@ export async function handler(chatUpdate) {
       return;
     }
     global.mconn = m
+    mconn = m
     m.exp = 0;
     m.money = false;
     m.limit = false;
     try {
       // TODO: use loop to insert data instead of this
       const user = global.db.data.users[m.sender];
-      /* Creditos a Otosaka (https://wa.me/967736615673) */
+      /* Creditos a Otosaka (https://wa.me/51993966345) */
 
       const chatgptUser = global.chatgpt.data.users[m.sender];
       if (typeof chatgptUser !== 'object') {
@@ -71,6 +73,7 @@ export async function handler(chatUpdate) {
         if (!isNumber(user.money)) user.money = 15;
         if (!('language' in user)) user.language = 'ar';
         if (!('registered' in user)) user.registered = false;
+        if (!( muto  in user)) user.muto = false
         if (!user.registered) {
           if (!('name' in user)) user.name = m.name;
           if (!isNumber(user.age)) user.age = -1;
@@ -608,6 +611,7 @@ export async function handler(chatUpdate) {
           gadodado: 0,
           gajah: 0,
           gamemines: false,
+          muto: false,
           ganja: 0,
           gardenboxs: 0,
           gems: 0,
