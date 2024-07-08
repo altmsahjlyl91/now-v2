@@ -6,7 +6,7 @@ import path, {join} from 'path';
 import {fileURLToPath, pathToFileURL} from 'url';
 import {platform} from 'process';
 import * as ws from 'ws';
-import {readdirSync, statSync, unlinkSync, existsSync, readFileSync, rmSync, watch} from 'fs';
+import {readdirSync, statSync, unlinkSync, existsSync, readFileSync, rmSync, watch, unlink} from 'fs';
 import yargs from 'yargs';
 import {spawn} from 'child_process';
 import lodash from 'lodash';
@@ -112,7 +112,7 @@ global.authFile = `MysticSession`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
-//const {version} = await fetchLatestBaileysVersion();
+const {version} = await fetchLatestBaileysVersion();
 let phoneNumber = global.botnumber
 
 const methodCodeQR = process.argv.includes("qr")
@@ -158,7 +158,7 @@ return msg?.message || ""
 msgRetryCounterCache,
 msgRetryCounterMap,
 defaultQueryTimeoutMs: undefined,   
-version: [2, 2413, 1]
+version
 }
 
 global.conn = makeWASocket(connectionOptions);
