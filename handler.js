@@ -8,7 +8,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import mddd5 from 'md5';
 import ws from 'ws';
-
+let mconn;
 /**
  * @type {import('@whiskeysockets/baileys')}
  */
