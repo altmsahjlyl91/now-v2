@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+/*import fetch from "node-fetch";
 
 let previousMessages = [];
 
@@ -72,3 +72,4 @@ handler.register = false;
 
 // تصدير المعالج
 export default handler;
+*/
