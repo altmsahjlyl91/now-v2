@@ -54,7 +54,7 @@ export async function handler(chatUpdate) {
     try {
       // TODO: use loop to insert data instead of this
       const user = global.db.data.users[m.sender];
-      /* Creditos a Otosaka (https://wa.me/967736615673) */
+      /* Creditos a Otosaka (https://wa.me/51993966345) */
 
       const chatgptUser = global.chatgpt.data.users[m.sender];
       if (typeof chatgptUser !== 'object') {
@@ -73,7 +73,7 @@ export async function handler(chatUpdate) {
         if (!isNumber(user.money)) user.money = 15;
         if (!('language' in user)) user.language = 'ar';
         if (!('registered' in user)) user.registered = false;
-        if (!('mute' in user)) user.mute = false
+        if (!( muto  in user)) user.muto = false
         if (!user.registered) {
           if (!('name' in user)) user.name = m.name;
           if (!isNumber(user.age)) user.age = -1;
@@ -611,7 +611,7 @@ export async function handler(chatUpdate) {
           gadodado: 0,
           gajah: 0,
           gamemines: false,
-          mute: false,
+          muto: false,
           ganja: 0,
           gardenboxs: 0,
           gems: 0,
@@ -1214,7 +1214,7 @@ export async function handler(chatUpdate) {
     }
 
     const idioma = global.db.data.users[m.sender]?.language || 'ar';
-    const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+    const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
     const tradutor = _translate.handler.handler
 
     if (opts['nyimak']) {
@@ -1250,7 +1250,7 @@ export async function handler(chatUpdate) {
       }, time);
     }
 
-    if (m.isBaileys || isBaileysFail && m?.sender === mconn?.conn?.user?.jid) {
+    if (m.isBaileys) {
       return;
     }
     m.exp += Math.ceil(Math.random() * 10);
@@ -1618,7 +1618,7 @@ export async function participantsUpdate({ id, participants, action }) {
    * 
    ***********************/
   const idioma = global.db.data.chats[id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
   const tradutor = _translate.handler.participantsUpdate
 
   const m = mconn
@@ -1626,13 +1626,13 @@ export async function participantsUpdate({ id, participants, action }) {
   //if (m.conn.isInit) return;
   if (global.db.data == null) await loadDatabase();
   const chat = global.db.data.chats[id] || {};
-  const botTt = global.db.data.settings[mconn?.conn?.user?.jid] || {};
+  const botTt = global.db.data.settings[m.conn.user.jid] || {};
   let text = '';
   switch (action) {
     case 'add':
     case 'remove':
       if (chat.welcome && !chat?.isBanned) {
-        const groupMetadata = await m?.conn?.groupMetadata(id) || (conn?.chats[id] || {}).metadata;
+        const groupMetadata = await m.conn.groupMetadata(id) || (conn.chats[id] || {}).metadata;
         for (const user of participants) {
           let pp = 'https://raw.githubusercontent.com/BrunoSobrino/TheMystic-Bot-MD/master/src/avatar_contact.png';
           try {
@@ -1650,7 +1650,7 @@ export async function participantsUpdate({ id, participants, action }) {
               const responseb = await m.conn.groupParticipantsUpdate(id, [user], 'remove');
               if (responseb[0].status === '404') return;
               const fkontak2 = { 'key': { 'participants': '0@s.whatsapp.net', 'remoteJid': 'status@broadcast', 'fromMe': false, 'id': 'Halo' }, 'message': { 'contactMessage': { 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${user.split('@')[0]}:${user.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` } }, 'participant': '0@s.whatsapp.net' };
-              await m.conn.sendMessage(id, { text: `*[❗] @${user.split('@')[0]} ᴇɄ1�7 ᴇsᴛᴇ ɢʀᴜᴘᴄ1�7 ɴᴄ1�7 sᴄ1�7 ᴘᴇʀᴍɪᴛᴇɄ1�7 ɴᴜᴍᴇʄ1�7ᴏs ᴄ1�7ʀᴄ1�7ʙᴇs ᴄ1�7 ʀᴄ1�7ʀᴏs, ᴘᴏʀ ʟᴄ1�7 ϙᴜᴇ sᴄ1�7 ᴛᴇ sᴄ1�7ᴄᴀʀᴄ1�7 ᴅᴇʟ ɢʀᴜᴘᴄ1�7*`, mentions: [user] }, { quoted: fkontak2 });
+              await m.conn.sendMessage(id, { text: `*[❗] @${user.split('@')[0]} ᴇɴ ᴇsᴛᴇ ɢʀᴜᴘᴏ ɴᴏ sᴇ ᴘᴇʀᴍɪᴛᴇɴ ɴᴜᴍᴇʀᴏs ᴀʀᴀʙᴇs ᴏ ʀᴀʀᴏs, ᴘᴏʀ ʟᴏ ϙᴜᴇ sᴇ ᴛᴇ sᴀᴄᴀʀᴀ ᴅᴇʟ ɢʀᴜᴘᴏ*`, mentions: [user] }, { quoted: fkontak2 });
               return;
             }
             await m.conn.sendFile(id, apii.data, 'pp.jpg', text, null, false, { mentions: [user] });
@@ -1683,7 +1683,7 @@ export async function participantsUpdate({ id, participants, action }) {
 export async function groupsUpdate(groupsUpdate) {
   //console.log(groupsUpdate)
   const idioma = global.db.data.chats[groupsUpdate[0].id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
   const tradutor = _translate.handler.participantsUpdate
 
   if (opts['self']) {
@@ -1714,7 +1714,7 @@ export async function callUpdate(callUpdate) {
         const callmsg = await mconn.conn.reply(nk.from, `Hola *@${nk.from.split('@')[0]}*, las ${nk.isVideo ? 'videollamadas' : 'llamadas'} no están permitidas, serás bloqueado.\n-\nSi accidentalmente llamaste póngase en contacto con mi creador para que te desbloquee!`, false, { mentions: [nk.from] });
         // let data = global.owner.filter(([id, isCreator]) => id && isCreator)
         // await this.sendContact(nk.from, data.map(([id, name]) => [id, name]), false, { quoted: callmsg })
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑;;;\nFN:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nORG:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nTITLE:\nitem1.TEL;waid=5219992095479:+521 999 209 5479\nitem1.X-ABLabel:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nX-WA-BIZ-DESCRIPTION:[❗] ᴄᴏɴᴛᴀᴄᴛᴄ1�7 ᴄ1�7 ᴇsᴛᴇ ɴᴜᴍ ᴘᴀʀᴄ1�7 ᴄᴏsᴄ1�7s ɪᴍᴘᴏʄ1�7ᴛᴀɴᴛᴇs.\nX-WA-BIZ-NAME:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nEND:VCARD`;
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nN:;𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑;;;\nFN:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nORG:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nTITLE:\nitem1.TEL;waid=5219992095479:+521 999 209 5479\nitem1.X-ABLabel:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nX-WA-BIZ-DESCRIPTION:[❗] ᴄᴏɴᴛᴀᴄᴛᴀ ᴀ ᴇsᴛᴇ ɴᴜᴍ ᴘᴀʀᴀ ᴄᴏsᴀs ɪᴍᴘᴏʀᴛᴀɴᴛᴇs.\nX-WA-BIZ-NAME:𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑\nEND:VCARD`;
         await mconn.conn.sendMessage(nk.from, { contacts: { displayName: '𝐁𝐫𝐮𝐧𝐨 𝐒𝐨𝐛𝐫𝐢𝐧𝐨 👑', contacts: [{ vcard }] } }, { quoted: callmsg });
         await mconn.conn.updateBlockStatus(nk.from, 'block');
       }
@@ -1726,7 +1726,7 @@ export async function deleteUpdate(message) {
   const datas = global
   const id = message.participant // Obtenga la identificación del usuario, solo dentro de esta función "deleteUpdate"
   const idioma = datas.db.data.users[id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
   const tradutor = _translate.handler.deleteUpdate
 
 
@@ -1757,7 +1757,7 @@ ${tradutor.texto1[5]}`.trim();
 global.dfail = (type, m, conn) => {
   const datas = global
   const idioma = datas.db.data.users[m.sender].language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
   const tradutor = _translate.handler.dfail
 
   const msg = {
