@@ -71,9 +71,9 @@ export async function handler(chatUpdate) {
         if (!isNumber(user.joincount)) user.joincount = 2;
         if (!isNumber(user.limit)) user.limit = 20;
         if (!isNumber(user.money)) user.money = 15;
-        if (!('language' in user)) user.language = 'ar';
+        if (!('language' in user)) user.language = 'es';
         if (!('registered' in user)) user.registered = false;
-        if (!( muto  in user)) user.muto = false
+        if (!('mute' in user)) user.mute = false
         if (!user.registered) {
           if (!('name' in user)) user.name = m.name;
           if (!isNumber(user.age)) user.age = -1;
@@ -611,7 +611,7 @@ export async function handler(chatUpdate) {
           gadodado: 0,
           gajah: 0,
           gamemines: false,
-          muto: false,
+          mute: false,
           ganja: 0,
           gardenboxs: 0,
           gems: 0,
@@ -904,7 +904,7 @@ export async function handler(chatUpdate) {
           wolflastfeed: 0,
           wood: 0,
           wortel: 0,
-          language: 'ar',
+          language: 'es',
           gameglx: {},
         };
       }
@@ -1128,9 +1128,9 @@ export async function handler(chatUpdate) {
         global.db.data.chats[m.chat] = {};
       }
       if (chat) {
-        if (!('language' in chat)) chat.language = 'ar';
+        if (!('language' in chat)) chat.language = 'es';
         if (!('isBanned' in chat)) chat.isBanned = false;
-        if (!('welcome' in chat)) chat.welcome = false;
+        if (!('welcome' in chat)) chat.welcome = true;
         if (!('detect' in chat)) chat.detect = true;
         if (!('detect2' in chat)) chat.detect2 = false;
         if (!('sWelcome' in chat)) chat.sWelcome = '';
@@ -1156,7 +1156,7 @@ export async function handler(chatUpdate) {
       } else {
         global.db.data.chats[m.chat] = {
           isBanned: false,
-          welcome: false,
+          welcome: true,
           detect: true,
           detect2: false,
           sWelcome: '',
@@ -1179,7 +1179,7 @@ export async function handler(chatUpdate) {
           simi: false,
           game: true,
           expired: 0,
-          language: 'ar',
+          language: 'es',
         };
       }
       const settings = global.db.data.settings[this.user.jid];
@@ -1213,8 +1213,8 @@ export async function handler(chatUpdate) {
       console.error(e);
     }
 
-    const idioma = global.db.data.users[m.sender]?.language || 'ar';
-    const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
+    const idioma = global.db.data.users[m.sender]?.language || 'es';
+    const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
     const tradutor = _translate.handler.handler
 
     if (opts['nyimak']) {
@@ -1250,7 +1250,7 @@ export async function handler(chatUpdate) {
       }, time);
     }
 
-    if (m.isBaileys) {
+    if (m.isBaileys || isBaileysFail && m?.sender === mconn?.conn?.user?.jid) {
       return;
     }
     m.exp += Math.ceil(Math.random() * 10);
@@ -1617,8 +1617,8 @@ export async function participantsUpdate({ id, participants, action }) {
    * Opção de tradução de idioma
    * 
    ***********************/
-  const idioma = global.db.data.chats[id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
+  const idioma = global.db.data.chats[id]?.language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
   const tradutor = _translate.handler.participantsUpdate
 
   const m = mconn
@@ -1626,13 +1626,13 @@ export async function participantsUpdate({ id, participants, action }) {
   //if (m.conn.isInit) return;
   if (global.db.data == null) await loadDatabase();
   const chat = global.db.data.chats[id] || {};
-  const botTt = global.db.data.settings[m.conn.user.jid] || {};
+  const botTt = global.db.data.settings[mconn?.conn?.user?.jid] || {};
   let text = '';
   switch (action) {
     case 'add':
     case 'remove':
       if (chat.welcome && !chat?.isBanned) {
-        const groupMetadata = await m.conn.groupMetadata(id) || (conn.chats[id] || {}).metadata;
+        const groupMetadata = await m?.conn?.groupMetadata(id) || (conn?.chats[id] || {}).metadata;
         for (const user of participants) {
           let pp = 'https://raw.githubusercontent.com/BrunoSobrino/TheMystic-Bot-MD/master/src/avatar_contact.png';
           try {
@@ -1682,8 +1682,8 @@ export async function participantsUpdate({ id, participants, action }) {
  */
 export async function groupsUpdate(groupsUpdate) {
   //console.log(groupsUpdate)
-  const idioma = global.db.data.chats[groupsUpdate[0].id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
+  const idioma = global.db.data.chats[groupsUpdate[0].id]?.language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
   const tradutor = _translate.handler.participantsUpdate
 
   if (opts['self']) {
@@ -1725,8 +1725,8 @@ export async function callUpdate(callUpdate) {
 export async function deleteUpdate(message) {
   const datas = global
   const id = message.participant // Obtenga la identificación del usuario, solo dentro de esta función "deleteUpdate"
-  const idioma = datas.db.data.users[id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
+  const idioma = datas.db.data.users[id]?.language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
   const tradutor = _translate.handler.deleteUpdate
 
 
@@ -1756,8 +1756,8 @@ ${tradutor.texto1[5]}`.trim();
 
 global.dfail = (type, m, conn) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/ar.json`))
+  const idioma = datas.db.data.users[m.sender].language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
   const tradutor = _translate.handler.dfail
 
   const msg = {
