@@ -35,7 +35,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
                     {
                         name: 'single_select',
                         buttonParamsJson: JSON.stringify({
-                            title: 'تحميل الفيديو',
+                            title: 'اضغط هنا لتحميل الفيديو',
                             sections: videos.map((video) => ({
                                 title: video.title,
                                 rows: [
@@ -52,7 +52,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
                     {
                         name: 'single_select',
                         buttonParamsJson: JSON.stringify({
-                            title: 'تحميل الصوت',
+                            title: 'اضغط هنا لتحميل الصوت',
                             sections: videos.map((video) => ({
                                 title: video.title,
                                 rows: [
