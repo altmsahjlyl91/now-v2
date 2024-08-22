@@ -1,15 +1,16 @@
 export async function all(m) {
-	
-  // when someone sends a group link to the bot's dm
-  if ((m.mtype === 'groupInviteMessage' || m.text.startsWith('https://chat') || m.text.startsWith('open this link')) && !m.isBaileys && !m.isGroup) {
-   this.sendMessage(m.chat,{text:`تقدر تكلم المطور اذا اردت البوت الدخول الى مجموعتك\n\n*اكتب* *.المطور* *للتواصل مع المطور*`.trim()}, {quoted:m});
-   /*this.sendButton(m.chat, `*Invite bot to a group*      
-    Hallo @${m.sender.split('@')[0]} 
-    you can rent the bot to join a group or contact owner 
-    more info click on the button
-  `.trim(), igfg, null, [['Rent', '/buyprem']] , m, { mentions: [m.sender] })*/
-   m.react('💎')
-} 
 
- return !0
+  // عندما يرسل أحدهم رابط مجموعة إلى البوت
+  if ((m.mtype === 'groupInviteMessage' || m.text.startsWith('https://chat') || m.text.startsWith('open this link')) && !m.isBaileys && !m.isGroup) {
+    
+    // رسالة تخبر المستخدم بالانتظار حتى يعطي المطور البوت الصلاحية للانضمام
+    this.sendMessage(m.chat, {
+      text: `لقد استلمت رابط المجموعة. يرجى الانتظار حتى يقوم المطور بإعطاء البوت الصلاحية للانضمام. إذا كنت بحاجة إلى مساعدة، اكتب *.المطور* للتواصل مع المطور.`.trim()
+    }, { quoted: m });
+
+    // إضافة رد فعل على الرسالة
+    m.react('⏳');  // أيقونة الساعة الرملية لتمثيل الانتظار
+  } 
+
+  return !0;
 }
