@@ -1214,7 +1214,7 @@ export async function handler(chatUpdate) {
     }
 
     const idioma = global.db.data.users[m.sender]?.language || 'ar';
-    const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+    const _translate = JSON.parse(fs.readFileSync(`./src/language/${idioma}.json`))
     const tradutor = _translate.handler.handler
 
     if (opts['nyimak']) {
