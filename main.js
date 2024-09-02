@@ -15,9 +15,9 @@ import {format} from 'util';
 import pino from 'pino';
 import Pino from 'pino';
 import {Boom} from '@hapi/boom';
-import {makeWASocket, protoType, serialize} from './lib/simple.js';
+import {makeWASocket, protoType, serialize} from './src/libraries/simple.js';
 import {Low, JSONFile} from 'lowdb';
-import store from './lib/store.js';
+import store from './src/libraries/store.js';
 const {DisconnectReason, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC} = await import("baileys");
 import readline from 'readline';
 import NodeCache from 'node-cache';
@@ -227,7 +227,7 @@ if (opts['server']) (await import('./server.js')).default(global.conn, PORT);
         - atte: sk1d             */
 
 function clearTmp() {
-  const tmp = [join(__dirname, './tmp')];
+  const tmp = [join(__dirname, './src/tmp')];
   const filename = [];
   tmp.forEach((dirname) => readdirSync(dirname).forEach((file) => filename.push(join(dirname, file))));
   return filename.map((file) => {

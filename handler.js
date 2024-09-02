@@ -71,7 +71,7 @@ export async function handler(chatUpdate) {
         if (!isNumber(user.joincount)) user.joincount = 2;
         if (!isNumber(user.limit)) user.limit = 20;
         if (!isNumber(user.money)) user.money = 15;
-        if (!('language' in user)) user.language = 'ar';
+        if (!('language' in user)) user.language = 'es';
         if (!('registered' in user)) user.registered = false;
         if (!('mute' in user)) user.mute = false
         if (!user.registered) {
@@ -904,7 +904,7 @@ export async function handler(chatUpdate) {
           wolflastfeed: 0,
           wood: 0,
           wortel: 0,
-          language: 'ar',
+          language: 'es',
           gameglx: {},
         };
       }
@@ -1130,8 +1130,8 @@ export async function handler(chatUpdate) {
       if (chat) {
         if (!('language' in chat)) chat.language = 'ar';
         if (!('isBanned' in chat)) chat.isBanned = false;
-        if (!('welcome' in chat)) chat.welcome = false;
-        if (!('detect' in chat)) chat.detect = false;
+        if (!('welcome' in chat)) chat.welcome = true;
+        if (!('detect' in chat)) chat.detect = true;
         if (!('detect2' in chat)) chat.detect2 = false;
         if (!('sWelcome' in chat)) chat.sWelcome = '';
         if (!('sBye' in chat)) chat.sBye = '';
@@ -1143,7 +1143,7 @@ export async function handler(chatUpdate) {
         if (!('audios' in chat)) chat.audios = false;
         if (!('antiLink' in chat)) chat.antiLink = false;
         if (!('antiLink2' in chat)) chat.antiLink2 = false;
-        if (!('antiviewonce' in chat)) chat.antiviewonce = true;
+        if (!('antiviewonce' in chat)) chat.antiviewonce = false;
         if (!('antiToxic' in chat)) chat.antiToxic = false;
         if (!('antiTraba' in chat)) chat.antiTraba = false;
         if (!('antiArab' in chat)) chat.antiArab = false;
@@ -1156,8 +1156,8 @@ export async function handler(chatUpdate) {
       } else {
         global.db.data.chats[m.chat] = {
           isBanned: false,
-          welcome: false,
-          detect: false,
+          welcome: true,
+          detect: true,
           detect2: false,
           sWelcome: '',
           sBye: '',
@@ -1169,7 +1169,7 @@ export async function handler(chatUpdate) {
           audios: true,
           antiLink: false,
           antiLink2: false,
-          antiviewonce: true,
+          antiviewonce: false,
           antiToxic: false,
           antiTraba: false,
           antiArab: false,
@@ -1214,7 +1214,7 @@ export async function handler(chatUpdate) {
     }
 
     const idioma = global.db.data.users[m.sender]?.language || 'ar';
-    const _translate = JSON.parse(fs.readFileSync(`./src/language/${idioma}.json`))
+    const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
     const tradutor = _translate.handler.handler
 
     if (opts['nyimak']) {
@@ -1617,8 +1617,8 @@ export async function participantsUpdate({ id, participants, action }) {
    * Opção de tradução de idioma
    * 
    ***********************/
-  const idioma = global?.db?.data?.chats[id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = global?.db?.data?.chats[id]?.language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.handler.participantsUpdate
 
   const m = mconn
@@ -1682,8 +1682,8 @@ export async function participantsUpdate({ id, participants, action }) {
  */
 export async function groupsUpdate(groupsUpdate) {
   //console.log(groupsUpdate)
-  const idioma = global.db.data.chats[groupsUpdate[0].id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = global.db.data.chats[groupsUpdate[0].id]?.language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.handler.participantsUpdate
 
   if (opts['self']) {
@@ -1725,8 +1725,8 @@ export async function callUpdate(callUpdate) {
 export async function deleteUpdate(message) {
   const datas = global
   const id = message.participant // Obtenga la identificación del usuario, solo dentro de esta función "deleteUpdate"
-  const idioma = datas.db.data.users[id]?.language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[id]?.language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.handler.deleteUpdate
 
 
@@ -1756,8 +1756,8 @@ ${tradutor.texto1[5]}`.trim();
 
 global.dfail = (type, m, conn) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language || 'ar';
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || 'es';
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.handler.dfail
 
   const msg = {
