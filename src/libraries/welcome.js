@@ -82,11 +82,11 @@ const toBase64 = (buffer, mime) => `data:${mime};base64,${buffer.toString('base6
  */
 const render = async ({
   wid = '',
-  pp = toBase64(readFileSync(join(src, 'avatar_contact.png')), 'image/png'),
+  pp = toBase64(readFileSync(join(src, 'avatar_contact2.png')), 'image/png'),
   name = '',
   title = '',
   text = '',
-  background = toBase64(readFileSync(join(src, 'Aesthetic', 'Aesthetic_000.jpeg')), 'image/jpeg'),
+  background = toBase64(readFileSync(join(src, 'Aesthetic', '../src/assets/images/backgrounds/bakground-1.jpeg')), 'image/jpeg'),
 } = {}, format = 'png') => {
   const svg = await genSVG({
     wid, pp, name, text, background, title,
